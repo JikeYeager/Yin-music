@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--    -->
+<mapper namespace="com.ly.yin.mapper.CollectMapper">
+    <resultMap id="BaseResultMap" type="com.ly.yin.domain.Collect">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="song_id" property="songId" jdbcType="INTEGER" />
+        <result column="song_list_id" property="songListId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, type, song_id,
+        song_list_id, create_time
+    </sql>
+
+<!--    实现多表查询的SQL语句 ，通过在Mapper中写findByUserIdAndSongName方法进入
+        resultType返回类型，由于我们只返回c.id，s.name，没有正常的返回类型供我们选择，所以可以自己写一个返回类CollectVO-->
+    <select id="findByUserIdAndSongName" resultType="com.ly.yin.vo.CollectVO">
+<!--  因为song表中有歌曲对应的歌手和专辑，如“吞噬星空”属于“张杰-仰望星空”，
+      所以只需要关联song表和collect表即可，无须song表、collect表 、sing表三表关联
+      -->
+        select c.id,s.name
+        from collect c,song s
+        where c.song_id = s.id and c.user_id = #{userId}
+<!--  如果搜索框有内容的话，还要在SQL查询中，加入搜索框的模糊查询的条件-->
+        <if test="songName != null and songName != ''">
+<!--            and s.name like concat('%',# {songName},'%')-->
+            and s.name like '%' #{songName} '%'
+        </if>
+
+    </select>
+
+<!--    用户端个人页面查看收藏的歌曲 不需要歌曲搜索的功能了-->
+    <select id="findByUserId" resultType="com.ly.yin.domain.Song">
+        select s.*
+        from collect c,song s
+        where c.song_id = s.id and c.user_id = #{userId}
+    </select>
+
+</mapper>

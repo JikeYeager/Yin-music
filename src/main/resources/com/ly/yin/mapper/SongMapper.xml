@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ly.yin.mapper.SongMapper">
+    <select id="listSong" resultType="com.ly.yin.domain.Song">
+-- 三表关联，查询指定歌单id对应的歌曲表的所有字段信息
+        select s.* from song s,list_song ls,singer sr
+        where s.singer_id = sr.id
+          and s.id = ls.song_id
+          and ls.song_list_id = #{songListId}
+    </select>
+<!--    歌曲表和歌手表关联 当搜索框输入歌手/歌曲/专辑时进行对应的查询-->
+    <select id="searchSong" resultType="com.ly.yin.domain.Song">
+        select s.* from song s,singer sr
+        where s.singer_id = sr.id
+        and (
+            s.name like concat('%',#{keyword},'%')
+            or sr.name like concat('%',#{keyword},'%')
+            or s.introduction like concat('%',#{keyword},'%')
+            )
+    </select>
+<!--    查询指定歌手id对应的歌曲 -->
+    <select id="getSongOfSingerId" resultType="com.ly.yin.domain.Song">
+        select s.* from song s,singer sg
+        where s.singer_id = sg.id
+        and sg.id = #{singerId}
+    </select>
+
+
+</mapper>
