@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+        namespace="com.ly.yin.mapper.SingerMapper">
+    <select id="listSong" resultType="com.ly.yin.domain.Singer">
+        SELECT s.*
+        FROM song s, list_song ls, singer sr
+        WHERE s.singer_id = sr.id
+        AND s.id = ls.song_id
+        AND sr.id = #{singerId}
+    </select>
+</mapper>
