@@ -1,0 +1,37 @@
+spring:
+   #数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/tp_music?usesSSL=false&a11owPublicKeyRetrieval=true&serverTimezone=UTC
+  #修改上传文件的最大值（从1MB改成20MB）
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 100MB
+  #邮件的绑定配置
+  mail:
+    #Spring Boot自动配置邮件发送器(`JavaMailSender`)时使用的属性。它指定了用于连接SMTP服务器的邮箱账号   qq邮箱：host smtp.qq.com
+    host: smtp.163.com
+    port: 465                       #默认465端口
+    username: xmkli520@163.com      # 填自己的能用的邮箱
+    password: FVNDQsgJWbfUKKEa      #不是邮箱密码，而是邮箱秘钥/授权密码
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          starttls:
+            enable: true
+#设置邮件发送时的“发件人地址”（即邮件中显示的`From`字段）。 改成和username一致
+mail:
+  address: xmkli520@163.com
+#日志追踪com. dz改成自己的包名
+logging:
+  level:
+        com.ly: trace
+#默认8080，后端端口修改9999
+server:
+  port: 9999 # 记得要留空格
