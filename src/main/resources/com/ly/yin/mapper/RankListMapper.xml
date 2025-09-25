@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- src/main/resources/mapper/RankListMapper.xml -->
+<mapper namespace="com.ly.yin.mapper.RankListMapper">
+    <select id="selectAvgScoreBySongListId" resultType="java.lang.Double">
+        SELECT AVG(score)
+        FROM rank_list
+        WHERE song_list_id = #{songListId}
+    </select>
+
+</mapper>
